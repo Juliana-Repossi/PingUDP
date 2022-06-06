@@ -6,8 +6,8 @@ import math
 import statistics 
 
 #variáveis para lidar com a representação do tempo
-unidade = 1000000
-retorno = 1000
+unidade = 100000
+retorno = 100
 
 # Endereço IP do servidor
 HOST = '127.0.0.1'
@@ -48,8 +48,8 @@ for i in range(total):
     tempo_saida = ((math.trunc(time.time()*unidade))%10000)  
 
     # juntar as informações
-    msg_final = str(numero) + ping + str(tempo_saida) + mensagem
-    print('ENVIADA: ', msg_final)
+    msg_final = str(numero) + ping + '{:04d}'.format(tempo_saida) + mensagem
+    #print('ENVIADA: ', msg_final)
 
     #enviar a mensagem através do socket criado
     s.sendto(msg_final.encode(),(HOST,PORT))
@@ -71,17 +71,17 @@ for i in range(total):
 
     except:
         #esgotou o tempo de espera para receber a msg do servidor
-        print('Exedeu o tempo de espera do pacote ', numero)
+        print('Exedeu o tempo de espera do pacote ', int(numero))
 
     else:        
 
         #testar formato da mensagem recebida (igual a enviada, porém com pong) - obs.: numero já testado
-        if msg_servidor[5:6] == '1' and msg_servidor[6:10] == str(tempo_saida) and msg_servidor[10:] == mensagem: 
+        if msg_servidor[5:6] == '1' and msg_servidor[6:10] == '{:04d}'.format(tempo_saida) and msg_servidor[10:] == mensagem: 
 
             #dentro do formato -> imprime a mensagem de ping
             rtts.append((tempo_chegada - tempo_saida)/retorno)
             print('40 bytes from ',HOST,': icmp_seq=',int(numero),'time=',(tempo_chegada-tempo_saida)/retorno)
-            print('RECEBIDA: ',msg_servidor)
+            #print('RECEBIDA: ',msg_servidor)
 
         else:
             #tem erro
