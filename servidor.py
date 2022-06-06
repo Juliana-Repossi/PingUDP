@@ -26,12 +26,6 @@ while True:
 		#mudar de ping para pong
 		new_msg = msg[:5] + '1' + msg[6:]
 		print('ENVIADO: ',new_msg)
-		
-		#causar erros para testar o ping
-		
-		#erro de formatação de campo
-		
-		#erro de faixa de representação
-				
+					
 		#enviar dados de volta ao cliente
 		s.sendto(new_msg.encode(),ender)
